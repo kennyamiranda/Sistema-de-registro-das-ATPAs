@@ -1,0 +1,107 @@
+<nav class="fixed-left col-md-2">
+  <div class="imagem_logo">
+    <%= image_tag "IFF-RJ.jpeg" %>
+  </div>
+  <% if user_signed_in? %>
+    <ul class="login_inicial">
+      <li><%= link_to "Menu Principal", welcome_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Editar Perfil", edit_user_registration_path, :class => "nav_li"  %></li>
+
+      <% if current_user.role == "admin"  %>
+        <li><%= link_to "Usuários", control_users_index_path, :class => "nav_li"  %></li>
+      <% end %>
+      <li><%= link_to "Atividades", activities_path, :class => "nav_li" %></li>
+      <li><%= link_to "Documentação", welcome_documents_path, :class => "nav_li active"  %></li>
+      <li><%= link_to "Eventos", evento_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Dúvidas/Contato", duvida_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Quem Somos", welcome_quem_somos_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Sair", destroy_user_session_path, method: :delete, :class => "nav_li"  %></li>
+    </ul>
+  <% else %>
+    <ul>
+        <%= link_to "Criar conta", new_user_registration_path, :class => "btn btn-primary"  %><br />
+        <%= link_to "Login", new_user_session_path, :class => "btn btn-primary"  %><br />
+    </ul>
+  <% end %>
+</nav>
+
+<div class="container col-md-9">
+    <h2>Sistema de registro das Atividades Teórico-Práticas de Aprofundamento (ATPA)</h2>
+    <% if flash[:notice] %>
+        <div class="notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    	<% if user_signed_in? %>
+
+      <div class="img1 col-md-3">
+        <a href="http://portal.mec.gov.br/cne/arquivos/pdf/028.pdf">
+          <%= image_tag("https://static.wixstatic.com/media/ec05d7_d63046650a944a73a08cbacf8eb83945~mv2.jpg/v1/fill/w_200,h_200,al_c,q_80,usm_0.66_1.00_0.01/ec05d7_d63046650a944a73a08cbacf8eb83945~mv2.webp", :alt => "link_planeta1") %>
+        </a>
+        <h3 class="page-header">
+          Parecer CNE/CP N.º 28 aprovado em 02 de outubro de 2001
+        </h3>
+
+        <p>
+          Estabelece  a duração e a carga horária dos Cursos de
+          Formação de Professores da Educação Básica, em nível superior.
+        </p>
+      </div>
+
+      <div class="img2 col-md-3">
+        <a href="http://portal.mec.gov.br/seesp/arquivos/pdf/res1_2.pdf">
+          <%= image_tag("https://static.wixstatic.com/media/ec05d7_d63046650a944a73a08cbacf8eb83945~mv2.jpg/v1/fill/w_200,h_200,al_c,q_80,usm_0.66_1.00_0.01/ec05d7_d63046650a944a73a08cbacf8eb83945~mv2.webp", :alt => "link_planeta2") %>
+        </a>
+        <h3 class="page-header">
+          Resolução CNE/CP N.º 1 de 18 de fevereiro de 2002
+        </h3>
+
+        <p>
+          Institui Diretrizes Curriculares Nacionais para a
+          Formação de Professores da Educação Básica, em nível superior.
+        </p>
+      </div>
+
+      <div class="img3 col-md-3">
+        <a href="http://portal.mec.gov.br/docman/agosto-2017-pdf/70431-res-cne-cp-002-03072015-pdf/file">
+          <%= image_tag("https://static.wixstatic.com/media/ec05d7_d63046650a944a73a08cbacf8eb83945~mv2.jpg/v1/fill/w_200,h_200,al_c,q_80,usm_0.66_1.00_0.01/ec05d7_d63046650a944a73a08cbacf8eb83945~mv2.webp", :alt => "link_planeta3") %>
+        </a>
+        <h3 class="page-header">
+        Resolução CNE/CP N.º 2, datada de 1.º de julho de 2015
+        </h3>
+
+        <p>
+          Define as Diretrizes Curriculares Nacionais para a formação
+          inicial em Nível Superior e para a formação continuada.
+        </p>
+      </div>
+
+      <div class="tabela col-md-12">
+        <div class="page-header">
+          <h3>Ou clique aqui para ser redirecionado ao site da DIRLIC.</h3>
+        </div>
+
+        <a href="https://licenciaturas.centro.iff.edu.br" class="btn btn-primary">Clique Aqui</a>
+      </div>
+    <% end %>
+</div>
+
+  <style type="text/css">
+    .img1, .img2, .img3 {
+      margin-left:6%;
+      background-color: rgba(245,245,245,0.9);
+      border-radius:15px;
+    }
+    img {
+      border-radius:100%;
+    }
+    .tabela {
+      text-align:center;
+      margin-bottom:30px;
+    }
+    .tabela > .page-header {
+      border-bottom:1px solid rgba(10,10,10,0.3);
+    }
+    .tabela a {
+      margin-top:-10px;
+    }
+  </style>

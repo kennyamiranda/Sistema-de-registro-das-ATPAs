@@ -1,0 +1,71 @@
+<div class="container">
+  <p id="notice"><%= notice %></p>
+  <table border="1" width="60%" class="table table-hover">
+    <caption>Atividade cadastrada</caption>
+  <tr>
+    <th>Título</th>
+    <td><%= @activity.titulo %></td>
+  </tr>
+
+  <% if @activity.tipo.present?%>
+  <tr>
+    <th>Tipo</th>
+    <td><%= @activity.tipo %></td>
+  </tr>
+  <% end %>
+
+
+  <tr>
+    <th>Grupo</th>
+    <td><%= @activity.nome_grupo %></td>
+  </tr>
+
+  <tr>
+    <th>Horas computadas</th>
+    <td><%= @activity.hora_computada %></td>
+  </tr>
+
+  <tr>
+    <th>Data do evento</th>
+    <td><%= @activity.data_evento %></td>
+  </tr>
+
+  <tr>
+    <th>Instituição</th>
+    <td><%= @activity.local_realizacao_atividade %> / <%= @activity.nome_do_evento %></td>
+  </tr>
+
+  <tr>
+    <th>Relatório de Atividade</th>
+    <td><%= @activity.relatorio %></td>
+  </tr>
+
+  <tr>
+    <th>Status</th>
+    <td><%= @activity.status %></td>
+  </tr>
+
+  <tr>
+    <th>Usuario</th>
+    <td><%= @activity.user.nome %></td>
+  </tr>
+
+  <tr>
+    <th>Supervisor avaliador</th>
+    <td><%= @activity.edited_by %></td>
+  </tr>
+
+  <h4>Documentos</h4>
+  <% if ((@activity.status != "Deferido")&&(@activity.status != "Indeferido"))%>
+    <% @activity.documents.each_with_index do |document, index| %>
+      <%= link_to("Anexo #{index + 1}", document.url, target: '_blank' , :class => 'btn btn-success')%>
+      <br />
+    <% end %>
+  <% end %>
+
+  <style typ="text/css">
+    .btn-success {
+      color:black;
+    }
+  </style>
+</div>

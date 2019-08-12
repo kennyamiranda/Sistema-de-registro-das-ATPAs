@@ -1,0 +1,90 @@
+.button_session input {
+  background-color:white;
+  border-radius:5px;
+  border:2px solid #BCD2EE;
+  height:30px;
+  width:60px;
+}
+.button_session button{
+  background-color:white;
+}
+.button_session button :hover{
+  background-color:white;
+  padding:8px 8px;
+  text-decoration:none;
+}
+.button_session a {
+  background-color:white;
+  padding:8px 4px;
+}
+.container h2 {
+  text-align:center;
+  font-size:2.8em;
+}
+.panel_header {
+  border: 10px solid rgba(20,180,20,0.6);
+  border-radius:10px;
+  background-color: rgba(245,245,245,0.1);
+  padding:5px;
+  text-align:center;
+}
+.panel_header h2 {
+  text-align:center;
+  font-size: 3.1em;
+}
+.aprofundamento {
+  text-align:center;
+}
+table {
+  background-color:rgba(255,255,255,0.7);
+}
+nav {
+  margin-top:50px;
+  background-color: rgba(240,240,240,0.8);
+  border-radius:10px;
+}
+nav ul {
+  text-align:center;
+}
+.active {
+  background-color:rgba(10,200,100,0.6);
+}
+.login_inicial > li > a {
+  padding:2px 50px;
+
+}
+.login_inicial li {
+  display:block;
+  margin-left:-55px;
+  margin-right:-15px;
+  margin-top:20px;
+  padding:2px 0px;
+}
+.login_inicial li:hover {
+  background-color:rgba(240,240,240,0.8);
+}
+.container {
+  border-left:1px dashed black;
+}
+.login_inicial > li > a:hover {
+  text-decoration:none;
+  background:none;
+  color:rgba(20,20,180,0.9);
+}
+.imagem_logo, .imagem_perfil {
+  display:absolute;
+  text-align:center;
+}
+.imagem_logo img {
+  height:100px;
+  width:100px;
+  border-radius:100%;
+  opacity:0.8;
+}
+body {
+  /* background: url('iff_wallpaper.png') fixed; */
+  background: url('wallpaper_fundo.png') fixed;
+  background-size:100%;
+  background-position: center;
+  height:100%;
+}

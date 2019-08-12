@@ -1,0 +1,37 @@
+<div class="container">
+  <% if current_user.role == "admin" %>
+    <h1>Analisando Atividade</h1>
+  <% else %>
+    <h1>Editando Atividade</h1>
+  <% end %>
+
+  <!-- Renderização do arquivo _form -->
+  <div class="col-md-3">
+  <%= render 'form', activity: @activity %>
+  <% if current_user.role == "admin" %>
+      <%= link_to 'Voltar', activities_path, :class => "btn btn-primary"  %>
+  <% end %>
+  </div>
+
+  <!-- Caso o usuário seja administrador, a tabela _show será renderizada -->
+  <% if current_user.role == "admin" %>
+    <div class="col-md-7 tabela_div">
+      <%= render 'show', activity: @activity %>
+    </div>
+  <% end %>
+
+
+  <style type="text/css">
+    .container a {
+      margin-top:5px;
+      margin-left:15px;
+    }
+    table {
+      width:700px!important;
+    }
+    .tabela_div {
+      margin-top:-45px;
+      margin-left: 70px;
+    }
+  </style>
+</div>

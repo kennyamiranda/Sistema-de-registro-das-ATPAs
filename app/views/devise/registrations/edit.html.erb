@@ -1,0 +1,182 @@
+<nav class="fixed-left col-md-2">
+  <div class="imagem_logo">
+    <%= image_tag "IFF-RJ.jpeg" %>
+  </div>
+  <% if user_signed_in? %>
+    <ul class="login_inicial">
+      <li><%= link_to "Menu Principal", welcome_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Editar Perfil", edit_user_registration_path, :class => "nav_li active"  %></li>
+
+      <% if current_user.role == "admin"  %>
+        <li><%= link_to "Usuários", control_users_index_path, :class => "nav_li"  %></li>
+      <% end %>
+      <li><%= link_to "Atividades", activities_path, :class => "nav_li" %></li>
+      <li><%= link_to "Documentação", welcome_documents_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Eventos", evento_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Dúvidas/Contato", duvida_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Quem Somos", welcome_quem_somos_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Sair", destroy_user_session_path, method: :delete, :class => "nav_li"  %></li>
+    </ul>
+  <% else %>
+    <ul>
+        <%= link_to "Criar conta", new_user_registration_path, :class => "btn btn-primary"  %><br />
+        <%= link_to "Login", new_user_session_path, :class => "btn btn-primary"  %><br />
+    </ul>
+  <% end %>
+</nav>
+
+<div class="container col-md-9">
+
+  <div class="principal col-md-11">
+    <!-- //Obtenção do nome do usuário referente à edição de perfil. -->
+  <h2>Editando Perfil de <%= @user.nome %></h2>
+
+  <!-- Abertura da tag do devise para edição de perfil.  -->
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= devise_error_messages! %>
+
+
+  <div id="form_principal">
+    <!-- //Divs divididas entre esquerda e direita (duas divisões de 6 colunas) para melhor visualização do layout. -->
+    <div class="col-md-6">
+      <div class="direita">
+        <div class="field">
+          <%= f.label :nome %><br />
+          <%= f.text_field :nome, required:true %>
+        </div>
+
+        <div class="field">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :matricula %><br />
+          <%= f.text_field :matricula, require:true %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="esquerda">
+        <div class="field">
+          <%= f.label :licenciatura %><br />
+          <%= select("user","licenciatura",['Letras', 'Matemática', 'Ciências da Natureza', 'Educação Física', 'Teatro',
+            'Geografia'],{include_blank:"Selecione"}) %>
+        </div>
+        <br />
+
+        <div class="field">
+          <%= f.label :início_do_curso %>
+          <%= f.select :inicio_ano, @anos = [ 2008.1, 2008.2, " ",2009.1, 2009.2, " ", 2010.1, 2010.2, " ",
+          2011.1, 2011.2, " ", 2012.1, 2012.2, " ",
+          2013.1, 2013.2, " ", 2014.1, 2014.2, " ",
+          2015.1, 2015.2, " ", 2016.1, 2016.2, " ",
+          2017.1, 2017.2, " ", 2018.1, 2018.2, " ",
+          2019.1, 2019.2, " ", 2020.1, 2020.2, " ",
+          2021.1, 2021.2, " ", 2022.1, 2022.2, " ",
+          2023.1, 2023.2, " ", 2024.1, 2024.2, " ",
+          2025.1, 2025.2, " ", 2026.1, 2026.2, " ",
+          2027.1, 2027.2, " ", 2028.1, 2028.2, " " ]%>
+        </div>
+        <br />
+
+        <div class="field">
+          <%= f.label :previsão_de_término %>
+          <%= f.select :termino_ano, @anos %>
+        </div>
+        <br />
+      </div>
+    </div>
+
+    <div class="foto_perfil">
+      <%= f.label 'Envie uma foto de perfil' %>
+        <div class="foto_input">
+          <%= f.file_field :avatar, accept: 'image/gif, image/jpg, image/jpeg, image/png' %>
+        </div>
+    </div>
+
+  </div>
+    <!-- //Tag padrão de confirmação de email. -->
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Aguardando modificação de <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div class="form_senha" id="form_senha">
+      <div class="field">
+        <%= f.label :password %> <i>(Deixe em branco caso não queira modificar a senha)</i><br />
+        <%= f.password_field :password, autocomplete: "new-password" %>
+        <% if @minimum_password_length %>
+          <br />
+          <em><%= @minimum_password_length %> Caracteres mínimos</em>
+        <% end %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
+    </div>
+
+
+    <div class="button_session">
+      <!-- //Botão de submit para atualização. -->
+      <div class="actions">
+        <%= f.submit "Atualizar" %>
+      </div>
+    </div>
+  <% end %>
+
+
+  <div class="senha_button" id="senha_button">
+    <button type="button">Trocar Senha</button>
+  </div>
+
+  <div id="voltar">
+    <button type="button" class="btn btn-warning">Voltar</button>
+  </div>
+
+  <div class="cancelar_button" id="cancelar_button">
+    <h3>Cancelar minha conta</h3>
+
+    <div class="cancela">
+      <%= button_to "Cancelar minha conta", registration_path(resource_name), method: :delete %>
+    </div>
+  </div>
+
+  <style type="text/css">
+    .senha_button {
+      margin-top:20px;
+    }
+    .senha_button button {
+      background-color:white;
+      border-radius:5px;
+      border:2px solid #BCD2EE;
+      height:30px;
+      width:140px;
+    }
+    .container {
+      text-align:center;
+    }
+    .button_session input {
+      width:80px;
+    }
+    .button_session > .actions input {
+      margin-top:30px;
+    }
+    .foto_input {
+      padding-left:38%;
+    }
+    .cancela input {
+      width:170px;
+    }
+    .esquerda {
+      float:left;
+    }
+    .direita {
+      float:right;
+    }
+  </style>
+  </div>
+</div>
+<%= javascript_include_tag "registration.js" %>

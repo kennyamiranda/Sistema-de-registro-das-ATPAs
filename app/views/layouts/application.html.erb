@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sistema Atividades</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+
+    <%= javascript_include_tag 'jquery-1.9.1' %>
+    <%= javascript_include_tag 'registration' %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag asset_path('indice.png') %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

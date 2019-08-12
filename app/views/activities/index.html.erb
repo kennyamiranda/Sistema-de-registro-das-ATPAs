@@ -1,0 +1,306 @@
+  <div class="container">
+  <p id="notice"><%= notice %></p>
+
+  <h1>Atividades cadastradas</h1>
+
+  <!-- Se a partição do código a seguir não for relacionada à
+  pagina de atividades, então o código encapsulado é renderizado -->
+  <% if policy(@activities).index? %>
+
+  <div class="botao_volta">
+    <%= link_to 'Voltar', welcome_index_path, :class => "btn btn-primary"  %>
+  </div>
+
+  <!-- Código para busca de um aluno da página activities_path,
+  de parâmetros GET com os parâmetros de procura enviados pelo :search -->
+  <%= form_tag(activities_path, method: :get, class: "form-group")  do %>
+    <%= text_field_tag :search, params[:search], class: "form-control text_form"%>
+    <%= submit_tag ("Procurar"), class: "form-control button_form"%>
+  <% end %>
+
+  <small style="color:purple">
+    O campo de pesquisa não se aplica aos campos:
+    <b>Horas Computadas</b> e <b>Data do Evento</b>
+  </small>
+
+  <!-- Início da exibição, pelo login administrativo, da
+  tabela de todas as atividades submetidas com pendência,
+  revisadas, deferidas e indeferidas -->
+  <table class="table table-hover table_admin">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Grupo</th>
+        <th>Horas computadas</th>
+        <th>Data do evento</th>
+        <th>Instituição / Evento</th>
+        <th>Relatório de Atividade</th>
+        <th>Aluno</th>
+        <th>Status</th>
+        <th>Profissional responsavel</th>
+        <th>Observação do profissional</th>
+        <% if current_user.role == "admin" %>
+        <th colspan="2">Ação</th>
+        <% else %>
+        <th colspan="3">Ação</th>
+        <% end %>
+        <th>Relatório de Horas do Aluno</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @activities.each do |activity| %>
+        <% if activity.status == "Pendente" || activity.status == "Revisar"%>
+          <tr>
+           <td class="titulo"><p><%= activity.titulo %></p></td>
+           <td class="grupo"><p><%= activity.nome_grupo %></p></td>
+           <td><%= activity.hora_computada %></td>
+           <td><%= activity.data_evento %></td>
+           <td><%= activity.local_realizacao_atividade %> / <%= activity.nome_do_evento %></td>
+           <td class="relatorio"><p><%= activity.relatorio %></p></td>
+           <td><%= activity.user.nome %></td>
+           <td><%= activity.status %></td>
+           <td><%= activity.edited_by %></td>
+           <td><%= activity.feedback %></td>
+           <% if current_user.role != "admin" %>
+            <td><%= link_to 'Exibir', activity %></td>
+            <td></td>
+           <% else %>
+            <td><%= link_to 'Analisar', edit_activity_path(activity) %></td>
+           <% end %>
+           <td></td>
+           <td><%= link_to 'Tabela de Horas', activities_path(@users, @activities,:nome => activity.user.nome, :format => :pdf), target: "_blank", :class => "btn btn-default" %></td>
+          </tr>
+        <% end %>
+      <% end %>
+
+      <% @activities.each do |activity| %>
+        <% if activity.status == "Deferido" || activity.status == "Indeferido"%>
+          <tr>
+            <td class="titulo"><p><%= activity.titulo %></p></td>
+            <td class="grupo"><p><%= activity.nome_grupo %></p></td>
+            <td><%= activity.hora_computada %></td>
+            <td><%= activity.data_evento %></td>
+            <td><%= activity.local_realizacao_atividade %> / <%= activity.nome_do_evento %></td>
+            <td class="relatorio"><p><%= activity.relatorio %></p></td>
+            <td><%= activity.user.nome %></td>
+            <td><%= activity.status %></td>
+            <td><%= activity.edited_by %></td>
+            <td><%= activity.feedback %></td>
+           <td><%= link_to 'Exibir', activity %></td>
+           <td><%= link_to 'Reavaliar', edit_activity_path(activity) %></td>
+           <td><%= link_to 'Tabela de Horas', activities_path(@users, @activities,:nome => activity.user.nome, :format => :pdf), target: "_blank", :class => "btn btn-default" %></td>
+          </tr>
+        <% end %>
+      <% end %>
+
+    </tbody>
+  </table>
+
+  <br>
+
+  <% else %>
+  <!-- Caso o usuário não seja um administrador, esse encapsulamento é renderizado -->
+  <!-- Separação em 3 colunas dos botôes de cadastro, visualização da tabela de horas e a visualização das horas em PDF -->
+  <div class="col-md-12" onmouseover="index_activities_slide()">
+    <%= link_to 'Voltar', welcome_index_path, :class => "btn btn-primary"  %>
+    <div class="col-md-3">
+      <%= link_to 'Cadastrar Atividade', new_activity_path, :class => "btn btn-danger slide3"  %>
+    </div>
+
+    <div class="col-md-3">
+      <%= link_to 'Exibir horas cadastradas', activities_horas_path, target: "_blank", :class => "btn btn-primary slide1" %>
+    </div>
+
+    <div class="col-md-3">
+      <%= link_to 'Gerar Relatório Completo', export_activity_path(current_user), target: "_blank", :class => "btn btn-primary slide2"  %>
+    </div>
+  </div>
+
+  <!-- Separação em 3 colunas das divs de explicação referente a cada botão. -->
+  <div class="col-md-12 info_index">
+    <div class="col-md-3">
+      <div class="slidedown3" style="display:none;">
+        <small style="color:red">Clique em <b>Cadastrar Atividade</b> para cadastrar uma nova atividade para aprovação.</small>
+          <ul>
+            <small style="color:#8B0000"><li>Ao cadastrar uma atividade, ela ficara com o status <i>Pendente</i>. Isso indica que já foi encaminhada
+              para o(a) avaliador(a), e necessita passar pela avaliação do(a) mesmo(a).</li></small>
+            <small style="color:#8B0000"><li>Ao passar pela avaliação e o(a) avaliador(a) salvar a avaliação, a atividade assumirá o status de <i>Deferido (Atividade é contabilizada na <b>Tabela de Horas</b>)</i>,
+              <i>Indeferido (Atividade não é contabilizada na <b>Tabela de Horas</b>)</i>, ou <i>Revisar (Avaliador(a) coloca atividade em "espera" para posterior revisão da mesma)</i>.</li></small>
+            <small style="color:#8B0000"><li>Ao ser avaliada, são preenchidos os campos 'Profissional Responsável' com o nome do(a) profissional(a) que realizou a avaliação,
+              e 'Observação do profissional' com o feedback dado pelo(a) avaliador(a).</li></small>
+          </ul>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="slidedown1" style="display:none;">
+        <small style="color: green">Clique em <b>Exibir horas cadastradas</b> para visualizar as todas horas contabilizadas,
+          e em que foram contabilizadas.</small>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="slidedown2" style="display:none;">
+        <small style="color:blue">Clique em <b>Gerar Relatório Completo</b> para visualizar toda a tabela de horas Deferidas, contabilizadas,
+        e todos os pedidos de cadastro de horas feitos até hoje, <u>em PDF</u>.</small>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+  <!-- Campo de busca por uma determinada atividade, na visualização do aluno -->
+  <%= form_tag(activities_path, method: :get, class: "form-group")  do %>
+    <%= text_field_tag :search, params[:search], class: "form-control text_form"%>
+    <%= submit_tag ("Procurar"), class: "form-control button_form"%>
+  <% end %>
+
+  <small style="color:purple;">
+    O campo de pesquisa não se aplica aos campos:
+    <b>Horas Computadas</b> e <b>Data do Evento</b>
+  </small>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Grupo</th>
+        <th>Horas computadas</th>
+        <th>Data do evento</th>
+        <th>Instituição / Evento</th>
+        <th>Relatório de Atividade</th>
+        <th>Status</th>
+        <th>Profissional responsavel</th>
+        <th>Observação do profissional</th>
+        <% if current_user.role == "admin" %>
+        <th>Ação</th>
+        <% else %>
+        <th colspan="3">Ação</th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @activities.each do |activity| %>
+        <tr>
+          <td class="titulo"><p><%= activity.titulo %></p></td>
+          <td class="grupo"><p><%= activity.nome_grupo %></p></td>
+          <td><%= activity.hora_computada %></td>
+          <td><%= activity.data_evento %></td>
+          <td><%= activity.local_realizacao_atividade %> / <%= activity.nome_do_evento %></td>
+          <td class="relatorio"><p><%= activity.relatorio %></p></td>
+          <td><%= activity.status %></td>
+          <td><%= activity.edited_by %></td>
+          <td><%= activity.feedback %></td>
+          <% if activity.status == "Deferido" || activity.status == "Indeferido"%>
+          <td><%= link_to 'Exibir', activity %></td>
+          <td></td>
+          <td></td>
+          <% elsif activity.status == "Pendente" %>
+            <td><%= link_to 'Exibir', activity %></td>
+            <td><%= link_to 'Editar', edit_activity_path(activity) %></td>
+            <td><%= link_to 'Apagar', activity, method: :delete, data: { confirm: 'Tem certeza?' } %></td>
+          <% elsif activity.status == "Revisar" %>
+            <td><%= link_to 'Exibir', activity %></td>
+            <td><%= link_to 'Editar', edit_activity_path(activity) %></td>
+            <td></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% end %>
+</div>
+
+<style type="text/css">
+  .text_form {
+    width:80%;
+  }
+  .botao_volta {
+    margin-bottom: 10px;
+  }
+  .button_form {
+    width:15%;
+  }
+  .text_form, .button_form {
+    display: inline-block;
+  }
+  .slidedown1, .slidedown2, .slidedown3 {
+    height:250px;
+    width:150px;
+    background-color:rgba(230,230,230,0.6);
+    border-radius:15px;
+    margin-top:-25px;
+    padding:20px;
+  }
+  .slidedown3 {
+    margin-left:-15px;
+    width:500px;
+  }
+  td , th {
+    border:1px solid black;
+    text-align:center;
+  }
+  table {
+    border:2px solid black;
+    text-align: center;
+  }
+  td p {
+    white-space: nowrap;
+    width: 70px;
+    overflow: hidden;
+    text-overflow:  ellipsis;
+  }
+  .table_admin {
+    margin-left:-70px;
+  }
+  td > a:hover {
+    background:none;
+    text-decoration:none;
+    color:black;
+  }
+  .col-md-3 {
+    margin-bottom:30px;
+  }
+  .col-md-3 > a {
+    margin-left:-15px;
+  }
+  .btn:hover {
+    padding:6px 12px;
+  }
+ .btn-danger:hover {
+   background-color:red;
+   color:white;
+ }
+
+
+  @media (max-width: 575.98px) {
+    .container h1 {
+      font-size:1.7em;
+    }
+    table {
+      font-size:0.48em;
+    }
+    td {
+      font-size:1.05em;
+    }
+    .button_form {
+      width:100px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .container h1 {
+      font-size:2em;
+    }
+    table {
+      font-size:0.56em;
+    }
+    td {
+      font-size:1.05em;
+    }
+  }
+</style>

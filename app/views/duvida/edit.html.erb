@@ -1,0 +1,26 @@
+<div class="container col-md-9">
+    <h3>Responder Dúvida</h3>
+    <%= form_with(model: @duvida, url: {action: "update"}, local: true) do |f| %>
+
+    <% if flash[:notice] %>
+        <div class="notice" style="color:green"><%= flash[:notice] %></div>
+    <% end %>
+
+    <!-- Passagem da visualização da dúvida por uma variável session -->
+    <%= f.label session[:duvida] %>
+
+    <%= f.text_area :resposta %> <br />
+
+    <%= f.submit "Salvar", :class => 'btn btn-success' %>
+
+    <%= link_to 'Voltar', :back, :class => "btn btn-primary"  %>
+
+    <% end %>
+
+    <style type="text/css">
+      textarea {
+        height:100px;
+        width:250px;
+      }
+    </style>
+</div>

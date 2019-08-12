@@ -1,0 +1,101 @@
+<nav class="fixed-left col-md-2">
+  <div class="imagem_logo">
+    <%= image_tag "IFF-RJ.jpeg" %>
+  </div>
+  <ul class="login_inicial">
+  <% if user_signed_in? %>
+    <li><%= link_to "Menu Principal", welcome_index_path, :class => "nav_li"  %></li>
+    <li><%= link_to "Editar Perfil", edit_user_registration_path, :class => "nav_li"  %></li>
+
+    <% if current_user.role == "admin"  %>
+      <li><%= link_to "Usuários", control_users_index_path, :class => "nav_li"  %></li>
+    <% end %>
+    <li><%= link_to "Atividades", activities_path, :class => "nav_li" %></li>
+    <li><%= link_to "Documentação", welcome_documents_path, :class => "nav_li"  %></li>
+    <li><%= link_to "Eventos", evento_index_path, :class => "nav_li"  %></li>
+    <li><%= link_to "Dúvidas/Contato", duvida_index_path, :class => "nav_li"  %></li>
+    <li><%= link_to "Quem Somos", welcome_quem_somos_path, :class => "nav_li active"  %></li>
+    <li><%= link_to "Sair", destroy_user_session_path, method: :delete, :class => "nav_li"  %></li>
+  </ul>
+  <% else %>
+  <ul>
+      <%= link_to "Criar conta", new_user_registration_path, :class => "btn btn-primary"  %><br />
+      <%= link_to "Login", new_user_session_path, :class => "btn btn-primary"  %><br />
+    <% end %>
+  </ul>
+</nav>
+
+<main class="container col-md-9">
+    <h2>Sistema de registro das Atividades Teórico-Práticas de Aprofundamento (ATPA)</h2>
+    <% if flash[:notice] %>
+        <div class="notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    	<% if user_signed_in? %>
+      <div class="principal">
+        <h3>Autores do projeto:</h3>
+        <div class="quem_somos_div">
+            <h4>Kennya Ferreira Silva Miranda</h4>
+            <span>Aluna do Mestrado em Ensino e suas Tecnologias - Graduada em Pedagogia</span>
+        </div>
+
+        <div class="quem_somos_div">
+            <h4>Gilmara Teixeira Barcelos Peixoto</h4>
+            <span>
+              Professora do Mestrado em Ensino e suas Tecnologias (IFF campus Campos Centro) -
+              Doutora em Informática na Educação (UFRGS)
+            </span>
+        </div>
+
+        <div class="quem_somos_div">
+            <h4>Arilise Moraes de Almeida Lopes</h4>
+            <span>
+              Professora do Mestrado em Ensino e suas Tecnologias  (IFF campus Campos Centro) -
+              Doutora em Informática na Educação (UFRGS)
+            </span>
+        </div>
+
+
+        <h3>Desenvolvedores:</h3>
+        <div class="quem_somos_div">
+            <h4>Aline Gomes Cordeiro</h4>
+            <span>
+              Professora do curso Bacharelado de Sistema de informação e no curso de Engenharia de computação
+              (IFF campus Campos Centro) - Mestre em Engenharia da Produção (UENF)
+            </span>
+        </div>
+
+        <div class="quem_somos_div">
+            <h4>Lucas Siqueira Fernandes</h4>
+            <span>
+              Bolsista de apoio e desenvolvimento tecnológico - alunos do curso Sistema de informação - IFF campus Campos Centro
+            </span>
+        </div>
+
+        <div class="quem_somos_div">
+            <h4>João Gabriel da Silva Santos</h4>
+            <span>
+              Bolsista de iniciação científica - aluno do curso Engenharia de computação - IFF campus Campos Centro
+            </span>
+        </div>
+
+        <div class="quem_somos_div">
+            <h4>Lucas Petronilha Torquato</h4>
+            <span>
+              Bolsista de iniciação científica  - aluno do curso Engenharia de computação - IFF campus Campos Centro
+            </span>
+        </div>
+      </div>
+      <% end %>
+</main>
+
+  <style type="text/css">
+    .principal {
+      background-color: rgba(255,255,255,0.7);
+      border-radius:10px;
+      padding:20px;
+    }
+    .quem_somos_div {
+      padding:20px;
+    }
+  </style>

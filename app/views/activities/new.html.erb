@@ -1,0 +1,50 @@
+
+  <% if current_user.role != "admin" %>
+    <!-- Caso o usuário não tenha a função administrativa, então o arquivo _form é renderizado -->
+    <div class="container">
+      <h1>Nova Atividade</h1>
+      <%= render 'form', activity: @activity %>
+    </div>
+  <% end %>
+
+  <% if current_user.role == "admin" %>
+    <nav class="fixed-left col-md-2">
+      <div class="imagem_logo">
+        <%= image_tag "IFF-RJ.jpeg" %>
+      </div>
+      <% if user_signed_in? %>
+        <ul class="login_inicial">
+          <li><%= link_to "Menu Principal", welcome_index_path, :class => "nav_li"  %></li>
+          <li><%= link_to "Editar Perfil", edit_user_registration_path, :class => "nav_li"  %></li>
+
+          <% if current_user.role == "admin"  %>
+            <li><%= link_to "Usuários", control_users_index_path, :class => "nav_li"  %></li>
+          <% end %>
+          <li><%= link_to "Atividades", activities_path, :class => "nav_li active" %></li>
+          <li><%= link_to "Documentação", welcome_documents_path, :class => "nav_li"  %></li>
+          <li><%= link_to "Eventos", evento_index_path, :class => "nav_li"  %></li>
+          <li><%= link_to "Dúvidas/Contato", duvida_index_path, :class => "nav_li"  %></li>
+          <li><%= link_to "Quem Somos", welcome_quem_somos_path, :class => "nav_li"  %></li>
+          <li><%= link_to "Sair", destroy_user_session_path, method: :delete, :class => "nav_li"  %></li>
+        </ul>
+      <% else %>
+        <ul>
+            <%= link_to "Criar conta", new_user_registration_path, :class => "btn btn-primary"  %><br />
+            <%= link_to "Login", new_user_session_path, :class => "btn btn-primary"  %><br />
+        </ul>
+      <% end %>
+    </nav>
+
+    <!-- Caso o usuário seja administrador, também habilita a modificação das horas -->
+    <div class="container col-md-9">
+      <h1>Modificar atividade de Horas</h1>
+      <%= render 'admin', activity: @activity %>
+    </div>
+  <% end %>
+
+
+  <style type="text/css">
+    .container ul li {
+      margin-left:-40px;
+    }
+  </style>

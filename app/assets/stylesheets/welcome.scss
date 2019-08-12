@@ -1,0 +1,46 @@
+// Place all the styles related to the Welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.button_session input {
+  background-color:white;
+  border-radius:5px;
+  border:2px solid #BCD2EE;
+  height:30px;
+  width:60px;
+}
+.button_session a {
+  background-color:white;
+  padding:8px 4px;
+}
+
+.btn {
+  text-decoration:none;
+  background-color:white;
+  margin-top:5px;
+  color:#2e6da4;
+}
+.btn:hover {
+  background-color:white;
+  color:black;
+  padding:6px 15px;
+}
+
+#tipo {
+  margin-bottom:15px;
+}
+@media (max-width: 575.98px) {
+  .container h1 {
+    font-size:1.7em;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container h1 {
+    font-size:1.8em;
+  }
+}
+
+@media (max-width: 991.98px) { }
+
+@media (max-width: 1199.98px) { }

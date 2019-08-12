@@ -1,0 +1,110 @@
+<nav class="fixed-left col-md-2">
+  <div class="imagem_logo">
+    <%= image_tag "IFF-RJ.jpeg" %>
+  </div>
+  <% if user_signed_in? %>
+    <ul class="login_inicial">
+      <li><%= link_to "Menu Principal", welcome_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Editar Perfil", edit_user_registration_path, :class => "nav_li"  %></li>
+
+      <% if current_user.role == "admin"  %>
+        <li><%= link_to "Usuários", control_users_index_path, :class => "nav_li"  %></li>
+      <% end %>
+      <li><%= link_to "Atividades", activities_path, :class => "nav_li" %></li>
+      <li><%= link_to "Documentação", welcome_documents_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Eventos", evento_index_path, :class => "nav_li active"  %></li>
+      <li><%= link_to "Dúvidas/Contato", duvida_index_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Quem Somos", welcome_quem_somos_path, :class => "nav_li"  %></li>
+      <li><%= link_to "Sair", destroy_user_session_path, method: :delete, :class => "nav_li"  %></li>
+    </ul>
+  <% else %>
+    <ul>
+        <%= link_to "Criar conta", new_user_registration_path, :class => "btn btn-primary"  %><br />
+        <%= link_to "Login", new_user_session_path, :class => "btn btn-primary"  %><br />
+    </ul>
+  <% end %>
+</nav>
+
+<div class="container col-md-9">
+    <h2>Sistema de registro das Atividades Teórico-Práticas de Aprofundamento (ATPA)</h2>
+    <h5>Bem vindo(a) à tela de Eventos</h5>
+    <%= form_with(model: @evento, url: {action: "create"}, local: true) do |f| %>
+
+    <% if flash[:notice] %>
+        <div class="notice" style="color:green"><%= flash[:notice] %></div>
+    <% end %>
+
+    <div class="background-quadros">
+      <% @eventos.order("id desc").each do |evento| %>
+        <div class="panel">
+          <div class="panel-body">
+            <h2><%= evento.noticia %></h2>
+
+            <% if evento.noticia_foto.url.present? %>
+              <%= image_tag(evento.noticia_foto.url) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <% if current_user.role == "admin" %>
+      <footer>
+        <div class="comentario col-md-8">
+          <%= f.text_area :noticia, :placeholder => "Digite seu Comentário" %>
+        </div>
+
+        <div class="button_session col-md-3">
+          <%= f.submit "Salvar" %>
+        </div>
+
+        <div class="noticia_foto col-md-3">
+          <small>Ou Envie uma foto do evento</small>
+          <%= f.file_field :noticia_foto, accept: 'image/gif, image/jpg, image/jpeg, image/png' %>
+        </div>
+      </footer>
+    <% end %>
+
+      <style type="text/css">
+        .container {
+          padding-bottom:150px;
+        }
+        .panel {
+          box-shadow: -3px 3px 15px rgba(200,200,200,0.3);
+          border-radius:20px;
+        }
+        .panel h2 {
+          text-align:center;
+          padding-bottom:5px;
+          color: rgba(120,120,120,0.9);
+        }
+        .comentario textarea {
+          resize: none;
+          width:100%;
+          height:80px;
+        }
+        .noticia_foto {
+          margin-top:10px;
+        }
+        .panel-body img {
+          height:250px;
+          width:550px;
+          border-radius:10px;
+          box-shadow:-3px -3px 33px rgba(20,20,20,0.3);
+        }
+        .panel-body {
+          text-align:center;
+        }
+        footer {
+          border: 2px solid black;
+          border-top-right-radius: 15px;
+          border-top-left-radius: 15px;
+          background-color: rgba(255,255,255,0.8);
+          padding:20px;
+          position:fixed;
+          bottom:0;
+          width:70%;
+        }
+      </style>
+    <% end %>
+</div>

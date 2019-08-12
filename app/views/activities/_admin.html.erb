@@ -1,0 +1,137 @@
+<div class="conteudo">
+  <%= form_with(model: activity, local: true) do |form| %>
+
+    <% if activity.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(activity.errors.count, "error") %> atividade bloqueada de ser salva:</h2>
+
+        <ul>
+        <% activity.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if current_user.role == "admin" %>
+    <h4>Aluno: <%= @value_nome %></h4>
+
+    <br />
+
+    <div class="field">
+      <%= form.label :horas_computadas %>
+      <%= form.number_field :hora_computada, step: :any, required:true %><br />
+      <small>(Para retirar, utilize horas negativas.</small><br />
+      <small>Para somar, utilize horas positivas.)</small>
+    </div>
+
+    <div class="field hidden">
+      <%= form.label :título %>
+      <%= form.text_field :titulo, value:"compensação do aluno "+@value_nome %>
+    </div>
+
+    <div class="field grupo">
+      <%= form.label :grupo %>
+      <%= form.select :grupo, grouped_options_for_select([['Grupo 1, ATIVIDADES
+        DE EXTENSÃO (80H)',options_for_select([["Participação como ouvinte em Palestras, Seminários,
+        Congressos, Conferências, Simpósios, Fóruns, Encontros,
+        Mesas Redondas e similares (30H)","0"],["Participação no desenvolvimento de projetos de extensão sob
+        orientação de professor,na área de formação (20H)","1"],["Visitas orientadas a exposições, museus, teatros, patrimônio
+        artístico ou cultural (20H)","2"],["Representação em Órgãos Colegiados e/ou Comissões do
+        IFFluminense campus Campos Centro (10H)","3"],["Participação em atividade de extensão, na área de formação, nas
+        modalidades presencial e/ou semipresencial (50H)","4"],["Atuação em função de bolsista no IFFluminense, em no mínimo
+        02 (dois) períodos letivos (20h)","5"],["Participação em curso de extensão, na área de formação, na
+        modalidade online (20H)","6"],["Participação em Atividade de Monitoria, na área de formação,
+        no 2º segmento do Ensino Fundamental, em Cursos de Nível
+        Médio e/ou em Curso Superior (20h)","7"]],@activity.grupo)],['Grupo 2, EVENTOS ACADÊMICO - CIENTÍFICO - CULTURAIS (80H)',options_for_select([["Participação como ouvinte na apresentação oral de Qualificação do
+        Projeto e/ou Monografia(Trabalho de Conclusão, Dissertação e Tese),
+        na área de formação e/ou em áreas afins à formação (20H)","8"],["Participação como ouvinte na apresentação oral de Monografias
+        (Trabalho Conclusão de Curso, Dissertação e Tese), na área de
+        formação e/ou em áreas afins à formação (30H)","9"],["Participação como ouvinte em Palestras, Seminários, Congressos,
+        Conferências, Simpósios, Fóruns, Encontros, Mesas Redondas,
+        minicursos, oficinas e similares (50h)","10"],["Participação como ouvinte em atividades artísticas e culturais
+        sob a supervisão de professor e/ou de profissional do
+        IFFluminense (35H)","11"]]),@activity.grupo],['Grupo 3, PRODUÇÃO ACADÊMICO - CIENTÍFICO - CULTURAL e PESQUISA INSTITUCIONAL
+        VINCULADA A AGÊNCIA DE FOMENTO (40H)',options_for_select([["Apresentação de trabalhos acadêmicos, científicos ou culturais
+        em instituições de âmbito local, regional, nacional e/ou
+        internacional (40H, 5H por trabalho apresentado)","12"],["Publicação em Periódicos / em Anais (Resumo e/ou Artigo
+        Completo) (40H, 10H por trabalho publicado)","13"],["Publicação em Livros (40H, 10H por trabalho publicado)","14"],["Participação na organização e coordenação de eventos
+        acadêmico-científico-culturais internos ou externos ao
+        IFFluminense (30H, 5H para cada dia de participação )","15"],["Participação no desenvolvimento como bolsista ou
+        voluntário, em projetos de pesquisa, por semestre letivo (10H)","16"],["Participação em Grupo de Estudo Temático soborientação de
+        professor, por semestre letivo, na área de formação e/ou em
+        áreas afins à formação (20H)","17"],["Apresentação de trabalhos de pesquisa institucional em eventos
+        científicos internos ou externos (40H, 5H pora cada apresentação)","18"],["Outros","22"]],@activity.grupo)]]),
+        {}, :id => "grupo" %>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <div id="tipo">
+        <%= form.label :tipo %>
+        <%= form.select :tipo, @activity_grupo_0, include_blank: "Selecione", selected: "" %>
+    </div>
+
+    <div class="field hidden">
+      <%= form.label :data_do_evento %>
+      <%= form.date_select :data_evento, :start_year => Date.today.year - 15, :end_year => Date.today.year ,
+      :use_month_names => ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro",
+        "Outubro", "Novembro", "Dezembro"]%>
+    </div>
+
+    <div class="field hidden">
+      <%= form.label :local_da_realização_da_atividade_ou_evento %>
+      <%= form.text_field :local_realizacao_atividade, value:"IFF"%>
+    </div>
+
+    <div class="field hidden">
+      <%= form.label :nome_do_evento %>
+      <%= form.text_field :nome_do_evento, value:"compensação do aluno "+@value_nome  %>
+    </div>
+
+    <div class="field hidden">
+      <%= form.label :relatorio, 'Relatório de Atividade'%>
+      (Qual a relação dessa atividade com a sua formação?)<br>
+      <%= form.text_area :relatorio, value:"compensação do aluno "+@value_nome %>
+    </div>
+
+    <div class="field hidden">
+      <%= form.label 'Documento' %>
+      <small style="color: red"> (Só serão permitidos arquivos pdf's)</small>
+      <br />
+      <br />
+      <%= form.file_field :documents, multiple: true, accept: 'application/pdf' %>
+    </div>
+
+    <% end %>
+    <br />
+
+    <div class="button_session">
+      <div class="actions">
+        <%= form.submit "Salvar" %>
+      </div>
+    </div>
+
+    <%= stylesheet_link_tag "hide_div_activities.css" %>
+    <%= javascript_include_tag "application.js" %>
+
+  <% end %>
+  <style type="text/css">
+    .grupo select {
+      width:80%;
+    }
+    .container button{
+      margin-left:15px;
+    }
+    .panel {
+      width:250px;
+      padding:10px;
+    }
+    .field textarea {
+      height:100px;
+    }
+    small {
+      color:purple;
+    }
+  </style>
+</div>

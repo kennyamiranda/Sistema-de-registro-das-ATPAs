@@ -10,7 +10,7 @@ gem 'fog', '~> 1.38'
 gem 'prawn-rails'
 
 gem 'pundit', '~> 1.1'
-gem 'devise', '~> 4.5'
+gem 'devise', '~> 4.7'
 gem 'cancancan', '~> 2.0'
 gem 'rails_admin', '~> 1.4', '>= 1.4.2'
 

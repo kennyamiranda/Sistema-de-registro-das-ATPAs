@@ -12,7 +12,7 @@ gem 'prawn-rails'
 gem 'pundit', '~> 1.1'
 gem 'devise', '~> 4.7'
 gem 'cancancan', '~> 2.0'
-gem 'rails_admin', '~> 1.4', '>= 1.4.2'
+gem 'rails_admin', '~> 1.4'
 
 gem "paperclip", "~> 6.0.0"
 gem 'paper_trail', '~> 10.0', '>= 10.0.1'
